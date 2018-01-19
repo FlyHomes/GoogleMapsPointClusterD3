@@ -39,7 +39,10 @@ export class PointCluster {
     this.polygonFillOpacity = options.polygonFillOpacity || '0.2';
     this.customPinHoverBehavior = options.customPinHoverBehavior || false;
     this.customPinClickBehavior = options.customPinClickBehavior || false;
-    this.viewCallback = options.viewCallback || function() {}
+    this.viewCallback = options.viewCallback || function() {};
+    this.polygons = options.polygons || [];
+    this.onPolygonClick = options.onPolygonClick || function() {};
+    this.onMapIdle = options.onMapIdle || function() {};
 
     // Set map events.
     this.setMapEvents();
@@ -104,13 +107,8 @@ export class PointCluster {
     var overlayInterval = setInterval(function() {
       if (document.getElementById('point_cluster_overlay')) {
         clearInterval(overlayInterval);
-        if (self.checkIfLatLngInBounds().length <= self.threshold) {
-          self.viewCallback('points view');
-          self.overlay.setMap(null);
-        } else {
-          self.viewCallback('clusters view');
-          self.paintClustersToCanvas(centerPoints);
-        }
+        self.viewCallback('clusters view');
+        self.paintClustersToCanvas(centerPoints);
       }
     }, 10);
   }
@@ -183,7 +181,9 @@ export class PointCluster {
     el.onclick = function() {
       self.removeElements();
       self.removePolygon();
-      self.zoomToFit(this);
+      self.zoomToFit(this, function() {
+        self.onPolygonClick(self.checkIfLatLngInBounds().length);
+      });
     }
   }
 
@@ -193,11 +193,12 @@ export class PointCluster {
 
       if (self.collection) {
         self.print();
+        self.onMapIdle(self.checkIfLatLngInBounds().length);
       }
     });
   }
 
-  zoomToFit(el) {
+  zoomToFit(el, callback) {
     var self = this;
     var collectionIds = el.dataset.latlngids.split(',');
     var points = [];
@@ -220,12 +221,15 @@ export class PointCluster {
 
     requestAnimationFrame(function() {
       self.map.fitBounds(latlngbounds);
+      callback();
       /*const center_lat = latlngbounds.getCenter().lat();
       const center_lng = latlngbounds.getCenter().lng();
       const current_zoom = self.map.getZoom();
       self.map.setCenter(new google.maps.LatLng(center_lat, center_lng));
       self.map.setZoom(current_zoom + 1);*/
     });
+
+    return { bounds: latlngbounds, points: points };
   }
 
   returnPointsRaw() {
