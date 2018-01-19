@@ -24,10 +24,10 @@ export class PointCluster {
     if (!options.map) {
       return console.error('ERROR: Google map instance is a requirement.');
     }
-
+    
     // Set object properties with sensible defaults (except the map instance).
     this.map = options.map;
-    this.mapContainer = options.mapContainer || 'map';
+    this.mapContainer = options.map.getDiv().getAttribute('id');
     this.clusterRange = options.clusterRange || 300;
     this.threshold = options.threshold || 200;
     this.clusterRgba = options.clusterRgba || '51, 102, 153, 0.8';
@@ -39,6 +39,7 @@ export class PointCluster {
     this.polygonFillOpacity = options.polygonFillOpacity || '0.2';
     this.customPinHoverBehavior = options.customPinHoverBehavior || false;
     this.customPinClickBehavior = options.customPinClickBehavior || false;
+    this.viewCallback = options.viewCallback || function() {}
 
     // Set map events.
     this.setMapEvents();
@@ -105,13 +106,13 @@ export class PointCluster {
         clearInterval(overlayInterval);
         if (self.checkIfLatLngInBounds().length <= self.threshold) {
           self.overlay.setMap(null);
-          self.points = window.PointClusterPoints = new Point(self.map, self.checkIfLatLngInBounds(), self.customPinClickBehavior, self.customPinHoverBehavior);
-          self.points.print();
-          PointPubSub.publish('Point.count', self.points.collection.length)
-          PointPubSub.publish('Point.show', self.points.collection)
+          PointPubSub.publish('Point.count', self.points.collection.length);
+          PointPubSub.publish('Point.show', self.points.collection);
+          this.viewCallback('points view');
         } else {
           PointPubSub.publish('Point.count', self.checkIfLatLngInBounds().length)
           self.paintClustersToCanvas(centerPoints);
+          this.viewCallback('clusters view');
         }
       }
     }, 10);
