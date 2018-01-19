@@ -37,6 +37,7 @@
     "underscore": "^1.8.3",
     "vanilla-pubsub": "^1.1.2",
     "webpack": "^1.12.14",
-    "webpack-compile-templates": "^0.2.1"
+    "webpack-compile-templates": "^0.2.1",
+    "webpack-dev-server": "1.16.0"
   }
 }
