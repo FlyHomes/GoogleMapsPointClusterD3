@@ -1,3 +1,5 @@
+const jsts = require('jsts');
+
 export class Helpers {
   constructor() {
 
@@ -43,6 +45,18 @@ export class Helpers {
       bottomLeft: projection.fromLatLngToPoint(map.getBounds().getSouthWest()),
       scale: Math.pow(2, map.getZoom())
     }
+  }
+
+  createJstsPolygon(polygon) {
+    const geometryFactory = new jsts.geom.GeometryFactory();
+    var path = polygon.getPath();
+    var coordinates = path.getArray().map(function name(coord) {
+      return new jsts.geom.Coordinate(coord.lat(), coord.lng());
+    });
+    if(coordinates[0].compareTo(coordinates[coordinates.length-1]) != 0)
+      coordinates.push(coordinates[0]);
+    var shell = geometryFactory.createLinearRing(coordinates);
+    return geometryFactory.createPolygon(shell);
   }
 
 }

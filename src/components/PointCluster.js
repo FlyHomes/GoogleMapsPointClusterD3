@@ -332,18 +332,35 @@ export class PointCluster {
         lat: item.x,
         lng: item.y
       }
-    })
+    });
 
-    this.polygon = new google.maps.Polygon({
-      paths: points,
+    const mapOptions = {
       strokeColor: self.polygonStrokeColor,
       strokeOpacity: self.polygonStrokeOpacity,
       strokeWeight: self.polygonStrokeWeight,
       fillColor: self.polygonFillColor,
       fillOpacity: self.polygonFillOpacity
-    });
+    }
 
-    this.polygon.setMap(self.map);
+    this.polygon = new google.maps.Polygon(Object.assign({}, {paths: points}, mapOptions));
+
+    if (this.polygons.length > 0) {
+      this.polygons.forEach( function(polygon) {
+        self.anotherPolygon = new google.maps.Polygon(Object.assign({}, {paths: polygon}, mapOptions));
+        const helper = new Helpers;
+        const jstsPolygon = helper.createJstsPolygon(self.polygon);
+        const jstsAnotherPolygon = helper.createJstsPolygon(self.anotherPolygon);
+        const coords = jstsPolygon.intersection(jstsAnotherPolygon).getCoordinates().map(function (coord) {
+          return { lat: coord.x, lng: coord.y };
+        });
+        if (coords.length > 0) {
+          self.polygon = new google.maps.Polygon(Object.assign({}, { paths: coords }, mapOptions));
+          self.polygon.setMap(map);
+        }
+      });
+    } else {
+      this.polygon.setMap(map);
+    }
   }
 
   removePolygon() {

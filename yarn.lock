@@ -2502,6 +2502,10 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
+jsts@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/jsts/-/jsts-1.5.0.tgz#72e06219b6c5b8285a7065efbed5bd714546392b"
+
 kind-of@^3.0.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-3.2.2.tgz#31ea21a734bab9bbb0f32466d893aea51e4a3c64"
