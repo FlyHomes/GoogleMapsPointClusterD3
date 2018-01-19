@@ -39,6 +39,7 @@ export class PointCluster {
     this.polygonFillOpacity = options.polygonFillOpacity || '0.2';
     this.customPinHoverBehavior = options.customPinHoverBehavior || false;
     this.customPinClickBehavior = options.customPinClickBehavior || false;
+    this.viewCallback = options.viewCallback || function() {}
 
     // Set map events.
     this.setMapEvents();
@@ -105,13 +106,13 @@ export class PointCluster {
         clearInterval(overlayInterval);
         if (self.checkIfLatLngInBounds().length <= self.threshold) {
           self.overlay.setMap(null);
-          self.points = window.PointClusterPoints = new Point(self.map, self.checkIfLatLngInBounds(), self.customPinClickBehavior, self.customPinHoverBehavior);
-          self.points.print();
-          PointPubSub.publish('Point.count', self.points.collection.length)
-          PointPubSub.publish('Point.show', self.points.collection)
+          PointPubSub.publish('Point.count', self.points.collection.length);
+          PointPubSub.publish('Point.show', self.points.collection);
+          this.viewCallback('points view');
         } else {
           PointPubSub.publish('Point.count', self.checkIfLatLngInBounds().length)
           self.paintClustersToCanvas(centerPoints);
+          this.viewCallback('clusters view');
         }
       }
     }, 10);
