@@ -194,6 +194,7 @@ export class PointCluster {
       if (self.collection) {
         self.print();
         self.onMapIdle(self.checkIfLatLngInBounds().length);
+        self.removePolygon();
       }
     });
   }
