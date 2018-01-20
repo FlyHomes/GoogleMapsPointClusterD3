@@ -348,7 +348,7 @@ export class PointCluster {
   }
 
   removePolygon() {
-    if (this.polygon === undefined) { return false; }
+    if (!this.polygon) { return false; }
     this.polygon.setMap(null);
   }
 
