@@ -95,7 +95,7 @@ export class PointCluster {
   }
 
   // print() is reponsible for calling D3 methods to convert `this.collection` into quadtree points.
-  print() {
+  print(callback) {
     var self = this;
 
     // Set the projection, create quadtree, and get centerpoints.
@@ -118,6 +118,9 @@ export class PointCluster {
           self.paintClustersToCanvas(centerPoints);
         }
       }
+
+      // this callback is supposed to be called after the rendering of the points
+      callback();
     }, 10);
   }
 
