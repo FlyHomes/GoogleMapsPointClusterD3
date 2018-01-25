@@ -25,7 +25,6 @@ export class PointCluster {
     }
 
     // Set object properties with sensible defaults (except the map instance).
-    this.preventClustering = options.preventClustering || false;
     this.map = options.map;
     this.mapContainer = options.mapContainer || 'map';
     this.clusterRange = options.clusterRange || 300;
@@ -87,15 +86,9 @@ export class PointCluster {
     }
     return arr;
   }
-  
-  // setPreventClustering() setter method for setting preventClustering functionality
-  setPreventClustering(preventClustering) {
-    var self = this;
-    self.preventClustering = preventClustering;
-  }
 
   // print() is reponsible for calling D3 methods to convert `this.collection` into quadtree points.
-  print(callback) {
+  print() {
     var self = this;
 
     // Set the projection, create quadtree, and get centerpoints.
@@ -114,13 +107,8 @@ export class PointCluster {
       if (document.getElementById('point_cluster_overlay')) {
         clearInterval(overlayInterval);
         self.viewCallback('clusters view');
-        if (!self.preventClustering) {
-          self.paintClustersToCanvas(centerPoints);
-        }
+        self.paintClustersToCanvas(centerPoints);
       }
-
-      // this callback is supposed to be called after the rendering of the points
-      callback();
     }, 10);
   }
 
