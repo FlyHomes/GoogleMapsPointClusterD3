@@ -8,7 +8,7 @@ OverlayContainer.prototype = new google.maps.OverlayView();
 
 // Api called when setMap(null) is called
 OverlayContainer.prototype.onRemove = function() {
-  if (this.div) {
+  if (this.div && this.div.parentNode) {
     this.div.parentNode.removeChild(this.div);
     this.div = null;
   }
