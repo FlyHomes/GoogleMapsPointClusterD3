@@ -133,9 +133,11 @@ export class PointCluster {
       }
       div.dataset.positionid = i;
       var latLngPointerArray = [];
+      var markerIdArray = [];
 
       o[2].forEach(function(a, b) {
         latLngPointerArray.push(a[2]);
+        markerIdArray.push(a[3]);
       });
 
       // START - Center cluster icon inside of Polygon.
@@ -167,6 +169,7 @@ export class PointCluster {
       // END - Center cluster icon inside of Polygon.
 
       div.dataset.latlngids = latLngPointerArray.join(',')
+      div.dataset.markerIds = markerIdArray.join(',')
       div.innerHTML = clusterCount;
       frag.appendChild(div);
       self.setClusterEvents(div)
@@ -320,6 +323,7 @@ export class PointCluster {
     var self = this;
 
     var collectionIds = el.dataset.latlngids.split(',');
+    var markerIds = el.dataset.markerIds.split(',');
 
     // Push the first lat/lng point to the end to close the polygon.
     collectionIds.push(collectionIds[0])
@@ -352,10 +356,7 @@ export class PointCluster {
     });
 
     this.polygon.setMap(self.map);
-    var helpers = new Helpers;
-    var markerPoints = helpers.clone(collectionIds);
-    markerPoints.splice(-1, 1);
-    self.onPolygonHover(markerPoints); // Because we push the first element at the back again
+    self.onPolygonHover(markerIds);
   }
 
   removePolygon() {
