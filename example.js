@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     map: map, // Pass in your map intance.
     clusterRange: 300, // clusterRange is the pixel grid to cluster. Smaller = more clusters / Larger = less clusters.
     threshold: 300, // Threshold is the number of results before showing markers,
-    clusterRgba: '255, 0, 102, .8', // Change the background of the cluster icon. RGBA only.
+    // clusterRgba: '255, 0, 102, .8', // Change the background of the cluster icon. RGBA only.
     clusterBorder: '5px solid #dcdcdc', // Change the border around the icon. HEX only.
     polygonStrokeColor: '#0f0f0e', // Polygon stroke color.
     polygonStrokeOpacity: '0.5', // Polygon stroke opacity.
@@ -21,7 +21,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
     polygonFillColor: '#0f0f0e', // Polygom fill color.
     polygonFillOpacity: '0.2', // Polygon fill color.
     customPinHoverBehavior: false, // If the user of the lib would rather not use internal overlay and opt for their own hover behavior.
-    customPinClickBehavior: false // If the user of the lib would rather not use internal overlay and opt for their own click behavior.
+    customPinClickBehavior: false, // If the user of the lib would rather not use internal overlay and opt for their own click behavior.
+    clusterImage: 'http://flyhomes.imgix.net/markers/cluster.svg',
+    clusterStyle: {
+      backgroundSize: 'cover',
+      backgroundPosition: '-3px 2px',
+      backgroundRepeat: 'no-repeat'
+    }
   });
 
   // Map idle listener.

@@ -29,7 +29,9 @@ export class PointCluster {
     this.mapContainer = options.mapContainer || 'map';
     this.clusterRange = options.clusterRange || 300;
     this.threshold = options.threshold || 200;
-    this.clusterRgba = options.clusterRgba || '51, 102, 153, 0.8';
+    this.clusterRgba = options.clusterRgba;
+    this.clusterStyle = options.clusterStyle || {};
+    this.clusterImage = options.clusterImage;
     this.clusterBorder = options.clusterBorder || '5px solid #ccc';
     this.polygonStrokeColor = options.polygonStrokeColor || '#336699';
     this.polygonStrokeOpacity = options.polygonStrokeOpacity || '0.5';
@@ -123,7 +125,11 @@ export class PointCluster {
 
       var div = document.createElement('div');
       div.className = 'point-cluster ' + helpers.returnClusterClassObject(clusterCount.toString().length).classSize;
-      div.style.backgroundColor = 'rgba(' + self.clusterRgba + ')';
+      self.clusterRgba && (div.style.backgroundColor = 'rgba(' + self.clusterRgba + ')');
+      self.clusterImage && (div.style.backgroundImage = 'url(' + self.clusterImage + ')');
+      for (var key in self.clusterStyle) {
+        div.style[key] = self.clusterStyle[key];
+      }
       div.dataset.positionid = i;
       var latLngPointerArray = [];
 
