@@ -27,6 +27,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
       backgroundSize: 'cover',
       backgroundPosition: '-3px 2px',
       backgroundRepeat: 'no-repeat'
+    },
+    onPolygonHover: points => {
+      alert(`Number of pointers in cluster: ${points.length}`)
     }
   });
 

@@ -44,6 +44,7 @@ export class PointCluster {
     this.polygons = options.polygons || [];
     this.onPolygonClick = options.onPolygonClick || function() {};
     this.onMapIdle = options.onMapIdle || function() {};
+    this.onPolygonHover = options.onPolygonHover || function() {};
 
     // Set map events.
     this.setMapEvents();
@@ -89,7 +90,7 @@ export class PointCluster {
     return arr;
   }
 
-  // print() is reponsible for calling D3 methods to convert `this.collection` into quadtree points.
+  // print() is responsible for calling D3 methods to convert `this.collection` into quadtree points.
   print() {
     var self = this;
 
@@ -350,6 +351,10 @@ export class PointCluster {
     });
 
     this.polygon.setMap(self.map);
+    var helpers = new Helpers;
+    var markerPoints = helpers.clone(collectionIds);
+    markerPoints.splice(-1, 1);
+    self.onPolygonHover(markerPoints); // Because we push the first element at the back again
   }
 
   removePolygon() {
