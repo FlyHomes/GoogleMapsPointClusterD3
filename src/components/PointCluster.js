@@ -261,7 +261,8 @@ export class PointCluster {
       return [
         x,
         y,
-        i
+        i,
+        o.id
       ]
     });
   }
