@@ -8,7 +8,7 @@ import Overlay from '../services/overlay';
 import { Point } from './Point';
 
 // Various helpers to, well, help.
-import { Helpers } from '../services/Helpers';
+import { Helpers } from '../services/helpers';
 
 // Import the point publish subscribe pattern.
 import PointPubSub from 'vanilla-pubsub';
@@ -168,10 +168,15 @@ export class PointCluster {
 
       // END - Center cluster icon inside of Polygon.
 
+      const clusterCoordinates = {
+        lt: mapProjections.bounds.getCenter().lat(),
+        ln: mapProjections.bounds.getCenter().lng()
+      }
+
       div.dataset.latlngids = latLngPointerArray.join(',')
       div.dataset.markerIds = markerIdArray.join(',')
       div.innerHTML = clusterCount;
-      div.dataset.clusterCoordinates = JSON.stringify(point);
+      div.dataset.clusterCoordinates = JSON.stringify(clusterCoordinates);
       frag.appendChild(div);
       self.setClusterEvents(div)
     });
@@ -358,7 +363,7 @@ export class PointCluster {
 
     this.polygon.setMap(self.map);
     const clusterCoordString = el.dataset && el.dataset.clusterCoordinates ? el.dataset.clusterCoordinates : '{}';
-     
+
     let clusterCoordinates = {};
     try {
       clusterCoordinates = JSON.parse(clusterCoordString);

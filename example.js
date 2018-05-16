@@ -28,8 +28,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
       backgroundPosition: '-3px 2px',
       backgroundRepeat: 'no-repeat'
     },
-    onPolygonHover: points => {
-      console.log(points);
+    onPolygonHover: (points, cords) => {
+      console.log(cords, points);
       // alert(`Number of pointers in cluster: ${points.length}`)
     }
   });
