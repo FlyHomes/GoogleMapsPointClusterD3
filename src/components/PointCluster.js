@@ -156,6 +156,9 @@ export class PointCluster {
         mapProjections.bounds.extend(polygonCoords[pi]);
       }
 
+      if (!mapProjections.projection)
+        return
+
       var point = mapProjections.projection.fromLatLngToPoint(
         new google.maps.LatLng(mapProjections.bounds.getCenter().lat(), mapProjections.bounds.getCenter().lng())
       );
