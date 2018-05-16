@@ -45,6 +45,7 @@ export class PointCluster {
     this.onPolygonClick = options.onPolygonClick || function() {};
     this.onMapIdle = options.onMapIdle || function() {};
     this.onPolygonHover = options.onPolygonHover || function() {};
+    this.onPolygonRemoveHover = options.onPolygonRemoveHover || function() {};
 
     // Set map events.
     this.setMapEvents();
@@ -192,10 +193,12 @@ export class PointCluster {
     }
     el.onmouseout = function() {
       self.removePolygon();
+      self.onPolygonRemoveHover()
     }
     el.onclick = function() {
       self.removeElements();
       self.removePolygon();
+      self.onPolygonRemoveHover()
       self.zoomToFit(this, function() {
         self.onPolygonClick(self.checkIfLatLngInBounds().length);
       });
