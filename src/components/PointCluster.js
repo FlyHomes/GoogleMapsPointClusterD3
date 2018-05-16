@@ -171,6 +171,7 @@ export class PointCluster {
       div.dataset.latlngids = latLngPointerArray.join(',')
       div.dataset.markerIds = markerIdArray.join(',')
       div.innerHTML = clusterCount;
+      div.dataset.clusterCoordinates = JSON.stringify(point);
       frag.appendChild(div);
       self.setClusterEvents(div)
     });
@@ -356,7 +357,15 @@ export class PointCluster {
     });
 
     this.polygon.setMap(self.map);
-    self.onPolygonHover(markerIds);
+    const clusterCoordString = el.dataset && el.dataset.clusterCoordinates ? el.dataset.clusterCoordinates : '{}';
+     
+    let clusterCoordinates = {};
+    try {
+      clusterCoordinates = JSON.parse(clusterCoordString);
+    } catch (e) {
+      clusterCoordinates = {};
+    }
+    self.onPolygonHover(markerIds, clusterCoordinates);
   }
 
   removePolygon() {
