@@ -300,6 +300,13 @@ export class PointCluster {
   getCenterPoints(quadtree) {
 
     var clusterPoints = [];
+    var offsetWidth, offsetHeight = null;
+    if (document.getElementById(this.mapContainer)) {
+      offsetWidth = document.getElementById(this.mapContainer).offsetWidth;
+      offsetHeight = document.getElementById(this.mapContainer).offsetHeight;
+    } else {
+      return clusterPoints;
+    }
 
     for (var x = 0; x <= document.getElementById(this.mapContainer).offsetWidth; x += this.clusterRange) {
       for (var y = 0; y <= document.getElementById(this.mapContainer).offsetHeight; y += this.clusterRange) {
