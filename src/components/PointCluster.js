@@ -81,11 +81,13 @@ export class PointCluster {
     var self = this;
     var arr = helpers.clone(this.collection);
     for (var i=0; i < arr.length; ++i) {
-      let lat = arr[i].lat || arr[i].location.latitude;
-      let lng = arr[i].lng || arr[i].location.longitude;
-      if (!self.map.getBounds().contains(new google.maps.LatLng(lat, lng))) {
-        arr.splice(i, 1);
-        --i; // Correct the index value
+      if (arr[i]) {
+        let lat = arr[i].lat || arr[i].location.latitude;
+        let lng = arr[i].lng || arr[i].location.longitude;
+        if (!self.map.getBounds().contains(new google.maps.LatLng(lat, lng))) {
+          arr.splice(i, 1);
+          --i; // Correct the index value
+        }
       }
     }
     return arr;
@@ -227,10 +229,12 @@ export class PointCluster {
     var points_alt = [];
     collectionIds.forEach(function(o, i) {
       var pointer = self.collection[parseInt(o)];
-      points_alt.push({
-        x: pointer.lat,
-        y: pointer.lng
-      });
+      if (pointer) {
+        points_alt.push({
+          x: pointer.lat,
+          y: pointer.lng
+        });
+      }
     });
     points_alt = convexHull(points_alt);
     points_alt.forEach(function(o, i) {
@@ -351,10 +355,12 @@ export class PointCluster {
 
     collectionIds.forEach(function(o, i) {
       var pointer = self.collection[parseInt(o)];
-      points.push({
-        x: pointer.lat,
-        y: pointer.lng
-      })
+      if (pointer) {
+        points.push({
+          x: pointer.lat,
+          y: pointer.lng
+        })
+      }
     });
 
     var points = convexHull(points);

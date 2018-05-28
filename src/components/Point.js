@@ -62,36 +62,38 @@ export class Point {
     const self = this;
     this.markers = [];
     this.collection.forEach(function(o, i) {
-      let lat = o.lat || o.location.latitude;
-      let lng = o.lng || o.location.longitude;
-      let m = new MarkerWithLabel({
-        position: new google.maps.LatLng(lat, lng),
-        map: self.map,
-        hoverContent: o.hoverData || "",
-        clickContent: o.clickData || "",
-        labelContent: '',
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 0
-        },
-        draggable: false,
-        labelAnchor: new google.maps.Point(10, 10),
-        labelClass: 'marker-point',
-        data: o.dataset
-      });
+      if (o) {
+        let lat = o.lat || o.location.latitude;
+        let lng = o.lng || o.location.longitude;
+        let m = new MarkerWithLabel({
+          position: new google.maps.LatLng(lat, lng),
+          map: self.map,
+          hoverContent: o.hoverData || "",
+          clickContent: o.clickData || "",
+          labelContent: '',
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 0
+          },
+          draggable: false,
+          labelAnchor: new google.maps.Point(10, 10),
+          labelClass: 'marker-point',
+          data: o.dataset
+        });
 
-      self.markers.push(m);
+        self.markers.push(m);
 
-      self.oms.addMarker(m)
+        self.oms.addMarker(m)
 
-      if (document.querySelector('#popper-container') === null) {
-        const fragHover = document.createRange().createContextualFragment(self.returnHoverTemplate());
-        self.map.getDiv().appendChild(fragHover);
-      }
+        if (document.querySelector('#popper-container') === null) {
+          const fragHover = document.createRange().createContextualFragment(self.returnHoverTemplate());
+          self.map.getDiv().appendChild(fragHover);
+        }
 
-      if (document.querySelector('#popper-container-clicked') === null) {
-        const fragClick = document.createRange().createContextualFragment(self.returnClickTemplate());
-        self.map.getDiv().appendChild(fragClick);
+        if (document.querySelector('#popper-container-clicked') === null) {
+          const fragClick = document.createRange().createContextualFragment(self.returnClickTemplate());
+          self.map.getDiv().appendChild(fragClick);
+        }
       }
 
     });
