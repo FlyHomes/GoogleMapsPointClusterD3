@@ -62,7 +62,7 @@ export class Point {
     const self = this;
     this.markers = [];
     this.collection.forEach(function(o, i) {
-      if (o) {
+      if (o && google) {
         let lat = o.lat || o.location.latitude;
         let lng = o.lng || o.location.longitude;
         let m = new MarkerWithLabel({
@@ -224,9 +224,11 @@ export class Point {
         let scale = Math.pow(2, map.getZoom());
 
         // Create point
-        var point = projection.fromLatLngToPoint(
-          new google.maps.LatLng(m.internalPosition.lat(), m.internalPosition.lng())
-        );
+        if (google) {
+          var point = projection.fromLatLngToPoint(
+            new google.maps.LatLng(m.internalPosition.lat(), m.internalPosition.lng())
+          );
+        }
 
         // Show the bubble
         let elem = document.querySelector('#popper-container');
@@ -300,24 +302,27 @@ export class Point {
         let scale = Math.pow(2, map.getZoom());
 
         // Create point
-        var point = projection.fromLatLngToPoint(
-          new google.maps.LatLng(m.internalPosition.lat(), m.internalPosition.lng())
-        );
+        if (google) {
+          var point = projection.fromLatLngToPoint(
+            new google.maps.LatLng(m.internalPosition.lat(), m.internalPosition.lng())
+          );
 
-        // Show the bubble
-        let elem = document.querySelector('#popper-container-clicked');
-        let inner = document.querySelector('.arrow_box_clicked');
-        inner.innerHTML = m.get('clickContent');
-        elem.style.display = 'block';
 
-        // Get the x/y based on the scale.
-        let containerHeight = elem.offsetHeight;
-        let containerWidth = elem.offsetWidth;
-        var posLeft = parseInt(((point.x - bottomLeft.x) * scale) - (containerWidth / 2 + 4));
-        var posTop = parseInt(((point.y - topRight.y) * scale) - (20 + containerHeight));
+          // Show the bubble
+          let elem = document.querySelector('#popper-container-clicked');
+          let inner = document.querySelector('.arrow_box_clicked');
+          inner.innerHTML = m.get('clickContent');
+          elem.style.display = 'block';
 
-        elem.style.top = `${posTop}px`;
-        elem.style.left = `${posLeft}px`;
+          // Get the x/y based on the scale.
+          let containerHeight = elem.offsetHeight;
+          let containerWidth = elem.offsetWidth;
+          var posLeft = parseInt(((point.x - bottomLeft.x) * scale) - (containerWidth / 2 + 4));
+          var posTop = parseInt(((point.y - topRight.y) * scale) - (20 + containerHeight));
+
+          elem.style.top = `${posTop}px`;
+          elem.style.left = `${posLeft}px`;
+        }
 
       });
     });

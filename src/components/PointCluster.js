@@ -81,7 +81,7 @@ export class PointCluster {
     var self = this;
     var arr = helpers.clone(this.collection);
     for (var i=0; i < arr.length; ++i) {
-      if (arr[i]) {
+      if (arr[i] && google) {
         let lat = arr[i].lat || arr[i].location.latitude;
         let lng = arr[i].lng || arr[i].location.longitude;
         if (!self.map.getBounds().contains(new google.maps.LatLng(lat, lng))) {
@@ -151,14 +151,16 @@ export class PointCluster {
 
       latLngPointerArray.forEach(function(o, i) {
         var pointer = self.collection[parseInt(o)];
-        polygonCoords.push(new google.maps.LatLng(pointer.lat, pointer.lng))
+        if (google) {
+          polygonCoords.push(new google.maps.LatLng(pointer.lat, pointer.lng))
+        }
       });
 
       for (pi = 0; pi < polygonCoords.length; pi++) {
         mapProjections.bounds.extend(polygonCoords[pi]);
       }
 
-      if (!mapProjections.projection)
+      if (!mapProjections.projection || !google)
         return
 
       var point = mapProjections.projection.fromLatLngToPoint(
@@ -212,6 +214,7 @@ export class PointCluster {
 
   setMapEvents() {
     var self = this;
+    if (!google)  return;
     google.maps.event.addListener(this.map, 'idle', function() {
 
       if (self.collection) {
@@ -224,6 +227,7 @@ export class PointCluster {
 
   zoomToFit(el, callback) {
     var self = this;
+    if (!google)  return;
     var collectionIds = el.dataset.latlngids.split(',');
     var points = [];
     var points_alt = [];
@@ -265,6 +269,8 @@ export class PointCluster {
     var mapProjections = helpers.returnMapProjections(this.map);
 
     this.pointsRawLatLng = []
+
+    if (!google)  return [];
 
     return this.collection.map(function(o, i) {
 
