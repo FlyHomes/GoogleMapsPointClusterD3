@@ -248,7 +248,6 @@ export class PointCluster {
 
     requestAnimationFrame(function() {
       if (self.zoomInThreshold && window.innerWidth < self.zoomInThreshold) {
-        console.log('using zoom in threshold');
         const center_lat = latlngbounds.getCenter().lat();
         const center_lng = latlngbounds.getCenter().lng();
         const current_zoom = self.map.getZoom();
