@@ -40,6 +40,7 @@ export class PointCluster {
     this.polygonFillOpacity = options.polygonFillOpacity || '0.2';
     this.customPinHoverBehavior = options.customPinHoverBehavior || false;
     this.customPinClickBehavior = options.customPinClickBehavior || false;
+    this.zoomInThreshold = options.zoomInThreshold || null;
     this.viewCallback = options.viewCallback || function() {};
     this.polygons = options.polygons || [];
     this.onPolygonClick = options.onPolygonClick || function() {};
@@ -246,13 +247,16 @@ export class PointCluster {
     }
 
     requestAnimationFrame(function() {
-      self.map.fitBounds(latlngbounds);
+      if (self.zoomInThreshold && window.innerWidth < self.zoomInThreshold) {
+        const center_lat = latlngbounds.getCenter().lat();
+        const center_lng = latlngbounds.getCenter().lng();
+        const current_zoom = self.map.getZoom();
+        self.map.setCenter(new google.maps.LatLng(center_lat, center_lng));
+        self.map.setZoom(current_zoom + 1);
+      } else {
+        self.map.fitBounds(latlngbounds);
+      }
       callback();
-      /*const center_lat = latlngbounds.getCenter().lat();
-      const center_lng = latlngbounds.getCenter().lng();
-      const current_zoom = self.map.getZoom();
-      self.map.setCenter(new google.maps.LatLng(center_lat, center_lng));
-      self.map.setZoom(current_zoom + 1);*/
     });
 
     return { bounds: latlngbounds, points: points };
