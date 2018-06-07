@@ -152,7 +152,9 @@ export class PointCluster {
 
       latLngPointerArray.forEach(function(o, i) {
         var pointer = self.collection[parseInt(o)];
-        polygonCoords.push(new google.maps.LatLng(pointer.lat, pointer.lng))
+        if (pointer !== null && pointer !== undefined) {
+          polygonCoords.push(new google.maps.LatLng(pointer.lat, pointer.lng))
+        }
       });
 
       for (pi = 0; pi < polygonCoords.length; pi++) {
@@ -239,7 +241,9 @@ export class PointCluster {
     });
     points_alt = convexHull(points_alt);
     points_alt.forEach(function(o, i) {
-      points.push(new google.maps.LatLng(o.x, o.y));
+      if (o !== undefined && o !== null) {
+        points.push(new google.maps.LatLng(o.x, o.y));
+      }
     });
     var latlngbounds = new google.maps.LatLngBounds();
     for (var i = 0; i < points.length; i++) {
