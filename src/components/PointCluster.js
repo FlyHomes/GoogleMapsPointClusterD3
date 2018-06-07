@@ -152,7 +152,7 @@ export class PointCluster {
 
       latLngPointerArray.forEach(function(o, i) {
         var pointer = self.collection[parseInt(o)];
-        if (pointer !== null || pointer !== undefined) {
+        if (pointer !== null && pointer !== undefined) {
           polygonCoords.push(new google.maps.LatLng(pointer.lat, pointer.lng))
         }
       });
