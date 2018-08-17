@@ -272,9 +272,11 @@ export class PointCluster {
     var helpers = new Helpers;
     var mapProjections = helpers.returnMapProjections(this.map);
 
-    this.pointsRawLatLng = []
+    this.pointsRawLatLng = [];
 
     return this.collection.map(function(o, i) {
+      if (!mapProjections.projection)
+        return;
 
       // Create our point.
       var point = mapProjections.projection.fromLatLngToPoint(
