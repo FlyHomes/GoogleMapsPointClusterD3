@@ -219,6 +219,7 @@ export class Point {
 
         // Get projection data
         let projection = map.getProjection();
+        if (!projection) return;
         let topRight = projection.fromLatLngToPoint(map.getBounds().getNorthEast());
         let bottomLeft = projection.fromLatLngToPoint(map.getBounds().getSouthWest());
         let scale = Math.pow(2, map.getZoom());
@@ -295,6 +296,7 @@ export class Point {
 
         // Get projection data
         let projection = map.getProjection();
+        if (!projection) return;
         let topRight = projection.fromLatLngToPoint(map.getBounds().getNorthEast());
         let bottomLeft = projection.fromLatLngToPoint(map.getBounds().getSouthWest());
         let scale = Math.pow(2, map.getZoom());
