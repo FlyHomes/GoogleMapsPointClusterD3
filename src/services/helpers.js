@@ -36,6 +36,8 @@ export class Helpers {
     var bounds = new google.maps.LatLngBounds(),
         projection = map.getProjection();
 
+    if (!projection) return {};
+
     return {
       bounds: bounds,
       projection: projection,
